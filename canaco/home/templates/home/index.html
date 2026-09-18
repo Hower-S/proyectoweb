@@ -1,11 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Canaco</title>
-</head>
-<body>
-    <h1>Página Index. Bienvenidos.</h1>
-</body>
-</html>
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+
+<section class="home-carousel-section bg-light">
+    <div id="homeCarousel" class="carousel slide home-carousel" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active" ariacurrent="" aria-label="Noticia "></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="4500">
+                <a href="" class="home-carousel-link">
+                    <img src="{% static 'images/hero_1.jpg' %}" class="d-block w-100 home-carousel-image" style="height: 400px; object-fit: cover; object-position: center;" alt="titulo">
+                    <div class="carousel-caption home-carousel-caption text-start">
+                        <span>Fecha de la noticia</span>
+                        <h2>Titulo de la noticia</h2>
+                        <p>Resumen de la noticia</p>
+
+                    </div>
+                </a>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bsslide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button> 
+ 
+        <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bsslide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+        </button>
+    </div>
+</section>
+
+<section class="section recent-news-section">
+    <div class="container">
+        <div class="row mb-4 justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="posts-entry-title">Noticias recientes</h2>
+                <a href="#" class="read-more">Ver todas</a>
+            </div>
+        </div>
+ 
+        <div class="row justify-content-center">
+            <div class="col-lg-4 mb-4">
+                <div class="post-entry-alt">
+                    <a href="" class="img-link">
+                        {% comment %} <img src="" alt="titulo" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;"> {% endcomment %}
+                        <img src="{% static 'images/img_1_horizontal.jpg' %}" alt="titulo" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;">
+                    </a>
+                    <div class="excerpt">
+                        <h2><a href="">titulo</a></h2>
+                        <div class="post-meta align-items-center text-left clearfix">
+                            <span>Fecha</span>
+                            <span>&nbsp;-&nbsp;Sin categoría</span>
+                        </div>
+                        <p>Resumen de la noticia</p>
+                        <p><a href="#" class="read-more">Saber más</a></p>
+                        <small>Visitas: 24</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <p>No hay noticias publicadas todavía.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %} 
