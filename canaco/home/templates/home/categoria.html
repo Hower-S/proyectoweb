@@ -1,11 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categoría</title>
-</head>
-<body>
-    <h1>Esta es la página: Categoría</h1>
-</body>
-</html>
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Categorías{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <h2 class="posts-entry-title">
+                    Categoría: Tecnología
+                </h2>
+            </div>
+            <div class="col-lg-4">
+                <select class="form-control" onchange="">
+                    <option value="categorias">Todas las categorías</option>
+                    <option value="tecnologia">Tecnología</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="row mb-5 align-items-center">
+            <div class="col-lg-3">
+                <a href="{% url 'home:noticia' %}" class="img-link">
+                    <img src="{%static 'images/hero_1.jpg' %}" alt="titulo" class="img-fluid category-post-image">
+                </a>
+            </div>
+            <div class="col-lg-8">
+                <span class="date">Fecha &bullet; Categoria</span>
+                <h2><a href="{% url 'home:noticia' %}">Titulo de la noticia</a></h2>
+                <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500</p>
+                <p><a href="{% url 'home:noticia' %}" class="btn btn-sm btn-outline-primary">Leer más</a></p>
+            </div>
+        </div>
+        <p>No hay noticias para esta categoría.</p>
+    </div>
+</section>
+{% endblock content %}

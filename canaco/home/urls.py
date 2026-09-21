@@ -17,6 +17,7 @@ urlpatterns = [
     path('crud-perfil/', views.crud_perfil, name='crud_perfil'),
     path('crud-usuarios/', views.crud_usuarios, name='crud_usuarios'),
     path('editar-categoria/', views.editar_categoria, name='editar_categoria'),
+    path('login/', views.login, name='login'),
     path('noticia/', views.noticia, name='noticia'),
     path('perfil/', views.perfil, name='perfil'),
     path('sign-up/', views.sign_up, name='sign_up'),

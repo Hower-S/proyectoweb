@@ -45,18 +45,18 @@
         <div class="row justify-content-center">
             <div class="col-lg-4 mb-4">
                 <div class="post-entry-alt">
-                    <a href="" class="img-link">
+                    <a href="{%url 'home:noticia' %}" class="img-link">
                         {% comment %} <img src="" alt="titulo" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;"> {% endcomment %}
                         <img src="{% static 'images/img_1_horizontal.jpg' %}" alt="titulo" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;">
                     </a>
                     <div class="excerpt">
-                        <h2><a href="">titulo</a></h2>
+                        <h2><a href="{%url 'home:noticia' %}">titulo</a></h2>
                         <div class="post-meta align-items-center text-left clearfix">
                             <span>Fecha</span>
                             <span>&nbsp;-&nbsp;Sin categoría</span>
                         </div>
                         <p>Resumen de la noticia</p>
-                        <p><a href="#" class="read-more">Saber más</a></p>
+                        <p><a href="{%url 'home:noticia' %}" class="read-more">Saber más</a></p>
                         <small>Visitas: 24</small>
                     </div>
                 </div>

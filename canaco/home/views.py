@@ -40,6 +40,9 @@ def crud_usuarios(request):
 def editar_categoria(request):
     return render(request, 'home/editar_categoria.html')
 
+def login(request):
+    return render(request, 'home/login.html')
+    
 def noticia(request):
     return render(request, 'home/noticia.html')
 

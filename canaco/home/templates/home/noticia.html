@@ -1,11 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noticia</title>
-</head>
-<body>
-    <h1>Esta es la página: Noticia</h1>
-</body>
-</html>
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Titulo de la noticia{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="alert alert-categoria alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+        <div class="row blog-entries">
+            <div class="col-md-12 col-lg-8 main-content">
+                <h1 class="mb-4">Titulo de la noticia</h1>
+                <img src="{%static 'images/hero_1.jpg' %}" alt="" class="img-fluid rounded mb-4 publicationcover-image" style="max-height: 500px; width: 100%; object-fit: cover; object-position: center;">
+                <div class="post-meta mb-4">
+                    <span>Fecha</span>
+                    <span>&nbsp;-&nbsp;Categoría</span>
+                    <span>&nbsp;-&nbsp;Visitas: 4 </span>
+                </div>
+                <h3>Resumen de la noticia</h3>
+                <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500</p>
+                <h3>Noticia</h3>
+                <div class="post-content-body">
+                    Al contrario del pensamiento popular, el texto de Lorem Ipsum no es simplemente texto aleatorio. Tiene sus raices en una pieza clásica de la literatura del Latin, que data del año 45 antes de Cristo, haciendo que este adquiera mas de 2000 años de antiguedad. Richard McClintock, un profesor de Latin de la Universidad de Hampden-Sydney en Virginia, encontró una de las palabras más oscuras de la lengua del latín, "consecteur", en un pasaje de Lorem Ipsum, y al seguir leyendo distintos textos del latín, descubrió la fuente indudable. Lorem Ipsum viene de
+                </div>
+
+                <h3 class="mt-5">Galería</h3>
+                <div class="row my-4">
+                    <div class="col-md-4 mb-4">
+                        <img src="{%static 'images/hero_2.jpg' %}" alt="Galería" class="img-fluid rounded publication-gallery-image" style="height: 250px; width: 100%; object-fit: cover; object-position: center;">
+                    </div>
+                    <div class="col-12"><p>Sin imágenes en galería.</p></div>
+                </div>
+
+                <div class="pt-4 comment-wrap">
+                    <h3 class="mb-4">Comentarios</h3>
+                    <div class="border-bottom pb-3 mb-3">
+                        <strong>Usuario Alfredos</strong>
+                        <span class="text-muted">fecha</span>
+                        <p class="mb-0">me gusto la noticia</p>
+                    </div>
+                    <p>No hay comentarios aprobados todavía.</p>
+
+                    <form method="POST" class="mt-4">
+                        <div class="mb-3">
+                            <label for="contenido" class="form-label">Agregar comentario</label>
+                            <textarea name="contenido" id="contenido" rows="4" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar comentario</button>
+                    </form>
+                    <a href="" class="btn btn-primary mt-3">Inicia sesión para comentar</a>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-4 sidebar">
+                <div class="sidebar-box">
+                    <h3 class="heading">Otras noticias</h3>
+                    <div class="post-entry-sidebar">
+                        <ul>
+                            <li>
+                                <a href="">
+                                    <img src="{%static 'images/hero_2.jpg' %}" alt="titulo" class="me-4 rounded sidebar-post-image" style="width: 70px; height: 70px; object-fit: cover; object-position: center;">
+                                    <div class="text">
+                                        <h4>Titulo</h4>
+                                        <div class="post-meta"><span></span></div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="sidebar-box">
+                    <h3 class="heading">Categorías</h3>
+                    <ul class="categories">
+                        <li><a href="">Tecnología</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

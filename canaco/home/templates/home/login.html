@@ -1,11 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    <h1>Esta es la página: Login</h1>
-</body>
-</html>
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="account-page">
+    <div class="account-card account-card-sm">
+        <h3>Iniciar sesión</h3>
+
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Usuario o contraseña incorrectos.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+        {% endif %}
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="POST" class="profile-edit-form">
+            {% csrf_token %}
+            <div class="profile-form-row">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="profile-form-row">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="profile-form-actions">
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+                <a href="{% url 'home:sign_up' %}" class="btn btn-outline-secondary">Crear cuenta</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
