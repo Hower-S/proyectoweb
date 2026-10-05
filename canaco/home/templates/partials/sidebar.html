@@ -1,0 +1,45 @@
+{% load static %}
+{% with current=request.resolver_match.url_name %}
+<aside class="panel-sidebar flex-shrink-0">
+    <ul class="nav nav-pills nav-flush flex-column mb-auto text-start">
+        <li class="nav-item">
+            <a href="{% url 'home:perfil' %}" class="nav-link panel-nav-link {% if current == 'perfil' or current == 'crud_perfil' %}active{% endif %}">
+                <span>Mi Perfil</span>
+            </a>
+        </li>
+        <li>
+            <a href="" class="nav-link panel-nav-link {% if current == 'crud_noticias' or current == 'crear_publicacion' or current == 'editar_publicacion' %}active{% endif %}">
+                <span>Noticias</span>
+            </a>
+        </li>
+        <li>
+            <a href="" class="nav-link panel-nav-link {% if current == 'crud_comentarios' %}active{% endif %}">
+                <span>Comentarios</span>
+            </a>
+        </li>
+        <li>
+            <a href="" class="nav-link panel-nav-link {% if current == 'crud_categorias' or current == 'editar_categoria' %}active{% endif %}">
+                <span>Categorías</span>
+            </a>
+        </li>
+        <li>
+            <a href="" class="nav-link panel-nav-link {% if current == 'crud_usuarios' or current == 'crear_usuario' or current == 'editar_usuario' %}active{% endif %}">
+                <span>Usuarios</span>
+            </a>
+        </li>
+        <li>
+            <a href="" class="nav-link panel-nav-link {% if current == 'crud_cambiar_contrasena' or current == 'crud_cambContra' %}active{% endif %}">
+                <span>Cambiar<br>contraseña</span>
+            </a>
+        </li>
+        <li>
+            <form method="post" action="{% url 'home:login' %}" class="w-100">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger panel-logout-button w-100">
+                    <span>Cerrar sesión</span>
+                </button>
+            </form>
+        </li>
+    </ul>
+</aside>
+{% endwith %}

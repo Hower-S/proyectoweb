@@ -1,11 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
-</head>
-<body>
-    <h1>Esta es la página: Perfil</h1>
-</body>
-</html>
+{% extends 'partials/sidebar_base.html' %}
+{% load static %}
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<div class="profile-page" style="flex-direction: column; align-items: center;">
+    {% if messages %}
+        <div style="width: 100%; max-width: 820px;">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    <div class="profile-card">
+        <div class="profile-photo-wrap">
+            {% if perfil_usuario.foto_perfil %}
+            <img src="{{ perfil_usuario.foto_perfil.display_url }}" alt="Foto de perfil" class="profilephoto">
+            {% else %}
+            <img src="{% static 'uploads/profile-default.jpg' %}" alt="Foto por defecto" class="profilephoto">
+            {% endif %}
+        </div>
+
+        <div class="profile-grid">
+            <div class="profile-field">
+                <span>Usuario:</span>
+                <strong>{{ request.user.username }}</strong>
+            </div>
+            <div class="profile-field">
+                <span>Nombre:</span>
+                <strong>{{ request.user.first_name|default:"Sin registrar" }}</strong>
+            </div>
+            <div class="profile-field">
+                <span>Paterno:</span>
+                <strong>{{ perfil_usuario.apellido_paterno|default:"Sin registrar" }}</strong>
+            </div>
+            <div class="profile-field">
+                <span>Materno:</span>
+                <strong>{{ perfil_usuario.apellido_materno|default:"Sin registrar" }}</strong>
+            </div>
+            <div class="profile-field profile-field-wide">
+                <span>Correo electrónico:</span>
+                <strong>{{ request.user.email|default:"Sin registrar" }}</strong>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a href="{% url 'home:crud_perfil' %}" class="btn btn-success">Editar mi perfil</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
