@@ -28,7 +28,7 @@
             </a>
         </li>
         <li>
-            <a href="" class="nav-link panel-nav-link {% if current == 'crud_cambiar_contrasena' or current == 'crud_cambContra' %}active{% endif %}">
+            <a href="{% url 'home:crud_cambiar_contrasena' %}" class="nav-link panel-nav-link {% if current == 'crud_cambiar_contrasena' or current == 'crud_cambContra' %}active{% endif %}">
                 <span>Cambiar<br>contraseña</span>
             </a>
         </li>

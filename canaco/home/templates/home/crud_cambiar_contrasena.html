@@ -1,11 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cambiar contraseña"</title>
-</head>
-<body>
-    <h1>Esta es la página: Cambiar contraseña</h1>
-</body>
-</html>
+{% extends 'partials/sidebar_base.html' %}
+{% load static %}
+{% block title %}Cambiar Contraseña{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="profile-edit-card">
+        <h3>Cambiar contraseña</h3>
+        <p>Esta acción modifica la contraseña de tu cuenta actual: <strong>{{ request.user.username }}</strong>.</p>
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" class="profile-edit-form">
+            {% csrf_token %}
+            <div class="profile-form-row">
+                <label for="actual">Contraseña actual</label>
+                <input type="password" id="actual" name="actual" required>
+            </div>
+            <div class="profile-form-row">
+                <label for="nueva">Nueva contraseña</label>
+                <input type="password" id="nueva" name="nueva" required>
+            </div>
+            <div class="profile-form-row">
+                <label for="confirmar">Confirmar contraseña</label>
+                <input type="password" id="confirmar" name="confirmar" required>
+            </div>
+            <div class="profile-form-actions">
+                <button type="submit" class="btn btn-primary">Actualizar contraseña</button>
+                <a href="{% url 'home:perfil' %}" class="btn btn-outline-secondary">Volver a mi perfil</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
