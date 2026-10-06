@@ -1,11 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noticias CRUD</title>
-</head>
-<body>
-    <h1>Esta es la página: Noticias CRUD</h1>
-</body>
-</html>
+{% extends 'partials/sidebar_base.html' %}
+{% load static %}
+{% block title %}Noticias{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Publicaciones Existentes</h1>
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+    <a href="" class="btn btn-primary mb-4">
+        <i class="bi bi-plus-circle me-1"></i> Crear publicación
+    </a>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Fecha Creación</th>
+                    <th>Fecha Actualización</th>
+                    <th>Visitas</th>
+                    <th>Status</th>
+                    <th colspan="4"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for noticia in publicaciones %}
+                <tr>
+                    <td>{{ noticia.titulo }}</td>
+                    <td>{% if noticia.autor %}{{ noticia.autor.username }}{% else %}-{% endif %}</td>
+                    <td>{{ noticia.createdat|date:"Y-m-d" }}</td>
+                    <td>{{ noticia.updatedat|date:"Y-m-d" }}</td>
+                    <td>{{ noticia.visitas }}</td>
+                    <td>
+                        {% if noticia.publicada %}
+                        <span class="badge bg-success">Publicado</span>
+                        {% else %}
+                        <span class="badge bg-warning text-dark">Borrador</span>
+                        {% endif %}
+                    </td>
+                    <td><a href="{% url 'home:noticia_detalle' noticia.id %}" class="btn btn-warning btnsm">Ver</a></td>
+                    <td><a href="{% url 'home:editar_publicacion' noticia.id %}" class="btn btn-info btnsm">Editar</a></td>
+                    <td><a href="{% url 'home:publicar_publicacion' noticia.id %}" class="btn btn-success btn-sm">{% if noticia.publicada %}Ocultar{% else %}Publicar{% endif %}</a></td>
+                    <td>
+                        <form method="post" action="{% url 'home:eliminar_publicacion' noticia.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="10" class="text-center">No hay publicaciones.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

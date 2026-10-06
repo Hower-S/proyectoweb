@@ -8,7 +8,7 @@
             </a>
         </li>
         <li>
-            <a href="" class="nav-link panel-nav-link {% if current == 'crud_noticias' or current == 'crear_publicacion' or current == 'editar_publicacion' %}active{% endif %}">
+            <a href="{% url 'home:crud_noticias' %}" class="nav-link panel-nav-link {% if current == 'crud_noticias' or current == 'crear_publicacion' or current == 'editar_publicacion' %}active{% endif %}">
                 <span>Noticias</span>
             </a>
         </li>
