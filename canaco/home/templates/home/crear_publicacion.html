@@ -1,11 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Publicación</title>
-</head>
-<body>
-    <h1>Esta es la página: Crear Publicación</h1> 
-</body>
-</html>
+{% extends 'partials/sidebar_base.html' %}
+{% load static %}
+{% block title %}{% if publicacion %}Editar Publicación{% else %}Crear Publicación{% endif %}{% endblock %}
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+<style>
+    .ql-editor.ql-blank::before {
+        left: 27px;
+        right: 15px;
+        font-style: normal;
+    }
+</style>
+{% endblock extra_css %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">{% if publicacion %}Editar Publicación{% else %}Crear Nueva Publicación{% endif %}</h1>
+    <form class="formEditor" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" class="form-control" id="titulo" name="titulo" value="{{ publicacion.titulo|default:'' }}" placeholder="Título de la publicación" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="resumen" class="form-label">Resumen</label>
+            <textarea class="form-control" id="resumen" name="resumen" rows="3" required>{{ publicacion.resumen|default:'' }}</textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="categoria" class="form-label">Categoría</label>
+                <select class="form-control" id="categoria" name="categoria">
+                    <option value="">Sin categoría</option>
+                    {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}" {% if publicacion and publicacion.categoria_id == categoria.id %}selected{% endif %}>{{ categoria.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="estado" class="form-label">Estado</label>
+                <select class="form-control" id="estado" name="estado">
+                    <option value="borrador" {% if publicacion and publicacion.estado == 'borrador' %}selected{% endif %}>Borrador</option>
+                    <option value="publicado" {% if publicacion and publicacion.estado == 'publicado' %}selected{% endif %}>Publicado</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="imagen_portada" class="form-label">Imagen de portada</label>
+            <input type="file" class="form-control" id="imagen_portada" name="imagen_portada">
+            {% if publicacion and publicacion.imagen_portada %}
+            <small class="text-muted">Actual: {{ publicacion.imagen_portada.nombre }}</small>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="editor" class="form-label">Contenido</label>
+            <div id="editor" class="form-control" style="height: 300px;">
+                {% if publicacion %}{{ publicacion.contenido|safe }}{% endif %}
+            </div>
+            <input type="hidden" name="contenido" id="contenido">
+        </div>
+
+        <div class="mb-3">
+            <label for="galeria" class="form-label">Galería de imágenes</label>
+            <input type="file" class="form-control" id="galeria" name="galeria" multiple>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Guardar Publicación</button>
+            <a href="{% url 'home:crud_noticias' %}" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.min.js"></script>
+<script>
+    const quill = new Quill('#editor', {
+        theme: 'snow',
+        placeholder: 'Escribe tu contenido aquí...'
+    });
+
+    document.querySelector('.formEditor').addEventListener('submit', function () {
+        document.querySelector('#contenido').value = quill.root.innerHTML;
+    });
+</script>
+{% endblock extra_js %}
