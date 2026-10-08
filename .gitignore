@@ -1,0 +1,6 @@
+# Ignorar todas las carpetas __pycache__ en cualquier nivel del proyecto
+__pycache__/
+*.py[cod]
+
+# Ignorar tu entorno virtual (por seguridad adicional)
+canaco_env/
