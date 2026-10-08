@@ -75,21 +75,15 @@ WSGI_APPLICATION = 'canaco.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
- 'default': {
- 'ENGINE': 'django.db.backends.mysql',
- 'NAME': 'canaco',
- 'USER': 'root',
- 'PASSWORD': '1234',
- 'HOST': 'localhost',
- 'PORT': '3306',
- 'OPTIONS': {
- 'charset': 'utf8mb4',
- 'use_unicode': True,
- "init_command": "SET NAMES utf8mb4; SET sql_mode='STRICT_TRANS_TABLES', default_storage_engine=INNODB",
- },
- }
-} 
-
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'canaco',
+        'USER': 'hower',          # Tu usuario de PostgreSQL
+        'PASSWORD': '1234',   # Tu contraseña
+        'HOST': 'localhost',         # O la IP/contenedor donde corre PostgreSQL 16
+        'PORT': '5435',              # Puerto por defecto de PostgreSQL
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
