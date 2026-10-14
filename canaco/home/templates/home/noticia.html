@@ -1,53 +1,70 @@
 {% extends 'partials/base.html' %}
 {% load static %}
-{% block title %}Titulo de la noticia{% endblock %}
+{% block title %}{{ publicacion.titulo }}{% endblock %}
 {% block content %}
 <section class="section">
     <div class="container">
-        <div class="alert alert-categoria alert-dismissible fade show" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-        </div>
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" arialabel="Cerrar"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
         <div class="row blog-entries">
             <div class="col-md-12 col-lg-8 main-content">
-                <h1 class="mb-4">Titulo de la noticia</h1>
-                <img src="{%static 'images/hero_1.jpg' %}" alt="" class="img-fluid rounded mb-4 publicationcover-image" style="max-height: 500px; width: 100%; object-fit: cover; object-position: center;">
+                <h1 class="mb-4">{{ publicacion.titulo }}</h1>
+                {% if publicacion.imagen_portada %}
+                <img src="{{ publicacion.imagen_portada.display_url }}" alt="{{ publicacion.titulo }}" class="img-fluid rounded mb-4 publication-cover-image" style="max-height: 500px; width: 100%; object-fit: cover; object-position: center;">
+                {% endif %}
                 <div class="post-meta mb-4">
-                    <span>Fecha</span>
-                    <span>&nbsp;-&nbsp;Categoría</span>
-                    <span>&nbsp;-&nbsp;Visitas: 4 </span>
+                    <span>{{ publicacion.createdat|date:"d M Y H:i" }}</span>
+                    <span>&nbsp;-&nbsp;{% if publicacion.categoria %}{{ publicacion.categoria.nombre }}{% else %}Sin categoría{% endif %}</span>
+                    <span>&nbsp;-&nbsp;Visitas {{ publicacion.visitas }}</span>
                 </div>
                 <h3>Resumen de la noticia</h3>
-                <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500</p>
+                <p>{{ publicacion.resumen }}</p>
                 <h3>Noticia</h3>
                 <div class="post-content-body">
-                    Al contrario del pensamiento popular, el texto de Lorem Ipsum no es simplemente texto aleatorio. Tiene sus raices en una pieza clásica de la literatura del Latin, que data del año 45 antes de Cristo, haciendo que este adquiera mas de 2000 años de antiguedad. Richard McClintock, un profesor de Latin de la Universidad de Hampden-Sydney en Virginia, encontró una de las palabras más oscuras de la lengua del latín, "consecteur", en un pasaje de Lorem Ipsum, y al seguir leyendo distintos textos del latín, descubrió la fuente indudable. Lorem Ipsum viene de
+                    {{ publicacion.contenido|safe }}
                 </div>
 
                 <h3 class="mt-5">Galería</h3>
                 <div class="row my-4">
+                    {% for imagen in publicacion.galeria.all %}
                     <div class="col-md-4 mb-4">
-                        <img src="{%static 'images/hero_2.jpg' %}" alt="Galería" class="img-fluid rounded publication-gallery-image" style="height: 250px; width: 100%; object-fit: cover; object-position: center;">
+                        <img src="{{ imagen.archivo.display_url }}" alt="Galería" class="imgfluid rounded publication-gallery-image" style="height: 250px; width: 100%; object-fit: cover; object-position: center;">
                     </div>
+                    {% empty %}
                     <div class="col-12"><p>Sin imágenes en galería.</p></div>
+                    {% endfor %}
                 </div>
-
+    
                 <div class="pt-4 comment-wrap">
                     <h3 class="mb-4">Comentarios</h3>
+                    {% for comentario in comentarios %}
                     <div class="border-bottom pb-3 mb-3">
-                        <strong>Usuario Alfredos</strong>
-                        <span class="text-muted">fecha</span>
-                        <p class="mb-0">me gusto la noticia</p>
+                        <strong>{{ comentario.user.username }}</strong>
+                        <span class="text-muted">{{ comentario.createdat|date:"d M Y H:i" }}</span>
+                        <p class="mb-0">{{ comentario.contenido }}</p>
                     </div>
+                    {% empty %}
                     <p>No hay comentarios aprobados todavía.</p>
+                    {% endfor %}
 
+                    {% if request.user.is_authenticated %}
                     <form method="POST" class="mt-4">
+                        {% csrf_token %}
                         <div class="mb-3">
                             <label for="contenido" class="form-label">Agregar comentario</label>
-                            <textarea name="contenido" id="contenido" rows="4" class="form-control" required></textarea>
+                            <textarea name="contenido" id="contenido" rows="4" class="formcontrol" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Agregar comentario</button>
                     </form>
-                    <a href="" class="btn btn-primary mt-3">Inicia sesión para comentar</a>
+                    {% else %}
+                    <a href="{% url 'home:login' %}" class="btn btn-primary mt-3">Inicia sesión para comentar</a>
+                    {% endif %}
                 </div>
             </div>
 
@@ -56,23 +73,28 @@
                     <h3 class="heading">Otras noticias</h3>
                     <div class="post-entry-sidebar">
                         <ul>
+                            {% for noticia in recientes %}
                             <li>
-                                <a href="">
-                                    <img src="{%static 'images/hero_2.jpg' %}" alt="titulo" class="me-4 rounded sidebar-post-image" style="width: 70px; height: 70px; object-fit: cover; object-position: center;">
+                                <a href="{% url 'home:noticia_detalle' noticia.id %}">
+                                    {% if noticia.imagen_portada %}
+                                    <img src="{{ noticia.imagen_portada.display_url }}" alt="{{ noticia.titulo }}" class="me-4 rounded sidebar-post-image" style="width: 70px; height: 70px; object-fit: cover; object-position: center;">
+                                    {% endif %}
                                     <div class="text">
-                                        <h4>Titulo</h4>
-                                        <div class="post-meta"><span></span></div>
+                                        <h4>{{ noticia.titulo }}</h4>
+                                        <div class="post-meta"><span>{{ noticia.createdat|date:"d M Y" }}</span></div>
                                     </div>
                                 </a>
                             </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
-                
                 <div class="sidebar-box">
                     <h3 class="heading">Categorías</h3>
                     <ul class="categories">
-                        <li><a href="">Tecnología</a></li>
+                        {% for categoria in categorias %}
+                        <li><a href="{% url 'home:categoria_detalle' categoria.id %}">{{ categoria.nombre }}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
