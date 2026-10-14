@@ -105,9 +105,36 @@ def crud_cambiar_contrasena(request):
     
     return render(request, 'home/crud_cambiar_contrasena.html')
 
-@login_required
+@operador_required
 def crud_categorias(request):
-    return render(request, 'home/crud_categorias.html')
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        if nombre:
+            Categoria.objects.create(nombre=nombre, fk_user=request.user)
+            messages.success(request, 'Categoría agregada correctamente.')
+            return redirect('home:crud_categorias')
+    categorias = Categoria.objects.all().order_by('-createdat')
+    return render(request, 'home/crud_categorias.html', {'categorias': categorias})
+
+@operador_required
+def editar_categoria(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre', '').strip()
+        if nombre:
+            categoria.nombre = nombre
+            categoria.save()
+            messages.success(request, 'Categoría actualizada correctamente.')
+        return redirect('home:crud_categorias')
+    return render(request, 'home/editar_categoria.html', {'categoria': categoria})
+
+@operador_required
+def eliminar_categoria(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    if request.method == 'POST':
+        categoria.delete()
+        messages.success(request, 'Categoría eliminada correctamente.')
+    return redirect('home:crud_categorias')
 
 @login_required
 def crud_comentarios(request):
@@ -202,10 +229,6 @@ def crear_usuario(request):
         messages.success(request, 'Usuario creado correctamente.')
         return redirect('home:crud_usuarios')
     return render(request, 'home/crear_usuario.html')
-
-@login_required
-def editar_categoria(request):
-    return render(request, 'home/editar_categoria.html')
 
 def login(request):
     return render(request, 'home/login.html')
