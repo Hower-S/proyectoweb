@@ -2,69 +2,86 @@
 {% load static %}
 {% block title %}Inicio{% endblock %}
 {% block content %}
-
+{% if slider %}
 <section class="home-carousel-section bg-light">
-    <div id="homeCarousel" class="carousel slide home-carousel" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active" ariacurrent="" aria-label="Noticia "></button>
+    <div id="homeCarousel" class="carousel slide home-carousel" data-bsride="carousel">
+    <div class="carousel-indicators">
+        {% for noticia in slider %}
+        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}" aria-label="Noticia {{ forloop.counter }}"></button>
+        {% endfor %}
+    </div>
+    <div class="carousel-inner">
+        {% for noticia in slider %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}" databs-interval="4500">
+            <a href="{% url 'home:noticia_detalle' noticia.id %}" class="homecarousel-link">
+                {% if noticia.imagen_portada %}
+                <img src="{{ noticia.imagen_portada.display_url }}" class="d-block w-100 home-carousel-image" style="height: 400px; object-fit: cover; object-position:
+                center;" alt="{{ noticia.titulo }}">
+                {% else %}
+                <img src="{% static 'images/hero_1.jpg' %}" class="d-block w-100 home-carousel-image" style="height: 400px; object-fit: cover; object-position: center;" alt="{{ noticia.titulo }}">
+                {% endif %}
+                
+                <div class="carousel-caption home-carousel-caption text-start">
+                    <span>{{ noticia.createdat|date:"d M Y" }}</span>
+                    <h2>{{ noticia.titulo }}</h2>
+                    {% if noticia.resumen %}
+                    <p>{{ noticia.resumen|truncatewords:20 }}</p>
+                    {% endif %}
+                </div>
+            </a>
         </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="4500">
-                <a href="" class="home-carousel-link">
-                    <img src="{% static 'images/hero_1.jpg' %}" class="d-block w-100 home-carousel-image" style="height: 400px; object-fit: cover; object-position: center;" alt="titulo">
-                    <div class="carousel-caption home-carousel-caption text-start">
-                        <span>Fecha de la noticia</span>
-                        <h2>Titulo de la noticia</h2>
-                        <p>Resumen de la noticia</p>
-
-                    </div>
-                </a>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bsslide="prev">
+        {% endfor %}
+    </div>
+                <button class="carousel-control-prev" type="button" data-bstarget="#homeCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Anterior</span>
-        </button> 
- 
-        <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bsslide="next">
+        </button>
+                <button class="carousel-control-next" type="button" data-bstarget="#homeCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Siguiente</span>
         </button>
     </div>
 </section>
+{% endif %}
 
 <section class="section recent-news-section">
     <div class="container">
         <div class="row mb-4 justify-content-center">
             <div class="col-lg-8 text-center">
                 <h2 class="posts-entry-title">Noticias recientes</h2>
-                <a href="#" class="read-more">Ver todas</a>
+                <a href="{% url 'home:categoria' %}" class="read-more">Ver todas</a>
             </div>
         </div>
- 
+
         <div class="row justify-content-center">
+            {% for noticia in publicaciones %}
             <div class="col-lg-4 mb-4">
                 <div class="post-entry-alt">
-                    <a href="{%url 'home:noticia' %}" class="img-link">
-                        {% comment %} <img src="" alt="titulo" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;"> {% endcomment %}
-                        <img src="{% static 'images/img_1_horizontal.jpg' %}" alt="titulo" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;">
+                    <a href="{% url 'home:noticia_detalle' noticia.id %}" class="imglink">
+                        {% if noticia.imagen_portada %}
+                            <img src="{{ noticia.imagen_portada.display_url }}" alt="{{ noticia.titulo }}" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;">
+                        {% else %}
+                        <img src="{% static 'images/img_1_horizontal.jpg' %}" alt="{{ noticia.titulo }}" class="img-fluid publication-card-image" style="height: 200px; width: 100%; object-fit: cover; object-position: center;">
+                        {% endif %}
                     </a>
                     <div class="excerpt">
-                        <h2><a href="{%url 'home:noticia' %}">titulo</a></h2>
+                        <h2><a href="{% url 'home:noticia_detalle' noticia.id %}">{{ noticia.titulo }}</a></h2>
                         <div class="post-meta align-items-center text-left clearfix">
-                            <span>Fecha</span>
-                            <span>&nbsp;-&nbsp;Sin categoría</span>
+                            <span>{{ noticia.createdat|date:"d M Y" }}</span>
+                                    <span>&nbsp;-&nbsp;{% if noticia.categoria %}{{ noticia.categoria.nombre }}{% else %}Sin categoría{% endif %}</span>
                         </div>
-                        <p>Resumen de la noticia</p>
-                        <p><a href="{%url 'home:noticia' %}" class="read-more">Saber más</a></p>
-                        <small>Visitas: 24</small>
+                        <p>{{ noticia.resumen }}</p>
+                            <p><a href="{% url 'home:noticia_detalle' noticia.id %}" class="read-more">Saber más</a></p>
+                        <small>Visitas: {{ noticia.visitas }}</small>
                     </div>
                 </div>
             </div>
+            {% empty %}
             <div class="col-12">
                 <p>No hay noticias publicadas todavía.</p>
             </div>
+            {% endfor %}
         </div>
     </div>
 </section>
-{% endblock content %} 
+{% endblock content %}
