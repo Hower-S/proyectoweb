@@ -31,13 +31,17 @@ class Archivo(models.Model):
     fk_user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     createdat = models.DateTimeField(auto_now_add=True)
     
-class Meta:
-    managed = True
-    db_table = 'archivo'
-    verbose_name_plural = 'Archivo'
-    
-def __str__(self):
-    return self.nombre
+    class Meta:
+        managed = True
+        db_table = 'archivo'
+        verbose_name_plural = 'Archivo'
+
+    @property
+    def display_url(self):
+        ruta = str(self.ruta)
+        if ruta.startswith(('images/', 'css/', 'js/', 'fonts/', 'uploads/profile-default')):
+            return f'/static/{ruta}'
+        return self.ruta.url
 
 # Modelo: Perfil
 
