@@ -39,6 +39,7 @@
                         <div class="d-none d-lg-flex align-items-center justify-content-end gap-2">
                             <a href="" class="text-white"></a>
                             <form method="post" action="{% url 'home:logout' %}">
+                                {% csrf_token %}
                                 <button type="submit" class="btn btn-sm btn-outline-light">Cerrar sesión</button>
                             </form>
                         </div>
