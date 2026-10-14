@@ -33,7 +33,7 @@
             </a>
         </li>
         <li>
-            <form method="post" action="{% url 'home:login' %}" class="w-100">
+            <form method="post" action="{% url 'home:logout' %}" class="w-100">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger panel-logout-button w-100">
                     <span>Cerrar sesión</span>
