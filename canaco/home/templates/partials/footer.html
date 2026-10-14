@@ -10,12 +10,12 @@
                     <div class="widget">
                         <h3>Redes Sociales</h3>
                         <ul class="list-unstyled social">
-                            <li><a href="#"><span class="icon-instagram"></span></a></li>
-                            <li><a href="#"><span class="icon-twitter"></span></a></li>
-                            <li><a href="#"><span class="icon-facebook"></span></a></li>
-                            <li><a href="#"><span class="icon-linkedin"></span></a></li>
-                            <li><a href="#"><span class="icon-pinterest"></span></a></li>
-                            <li><a href="#"><span class="icon-dribbble"></span></a></li>
+                            <li><a href="#"><span class="iconinstagram"></span></a></li>
+                            <li><a href="#"><span class="icontwitter"></span></a></li>
+                            <li><a href="#"><span class="iconfacebook"></span></a></li>
+                            <li><a href="#"><span class="iconlinkedin"></span></a></li>
+                            <li><a href="#"><span class="iconpinterest"></span></a></li>
+                            <li><a href="#"><span class="icondribbble"></span></a></li>
                         </ul>
                     </div> <!-- /.widget -->
                 </div> <!-- /.col-lg-4 -->
@@ -45,26 +45,33 @@
                         <h3 class="mb-4">Entradas Recientes</h3>
                         <div class="post-entry-footer">
                             <ul>
+                                {% for noticia in global_recientes %}
                                 <li>
-                                    <a href="">
-                                        {% comment %} <img src="" alt="" class="me-4 rounded" style="width: 70px; height: 70px; object-fit: cover;"> {% endcomment %}
-                                        <img src="{% static 'images/img_1_sq.jpg' %}" alt="" class="me-4 rounded" style="width: 70px; height: 70px; object-fit: cover;">
+                                    <a href="{% url 'home:noticia_detalle' noticia.id %}">
+                                        
+                                        {% if noticia.imagen_portada %}
+                                        <img src="{{ noticia.imagen_portada.display_url }}" alt="{{ noticia.titulo }}" class="me-4 rounded" style="width: 70px; height: 70px; object-fit: cover;">
+                                        {% else %}
+                                        <img src="{% static 'images/img_1_sq.jpg' %}" alt="{{ noticia.titulo }}" class="me-4 rounded" style="width: 70px; height: 70px; object-fit: cover;">
+                                        {% endif %}
                                         <div class="text">
-                                            <h4></h4>
+                                            <h4>{{ noticia.titulo }}</h4>
                                             <div class="post-meta">
-                                                <span class="mr-2"></span>
+                                                <span class="mr-2">{{ noticia.createdat|date:"d M, Y" }}</span>
                                             </div>
                                         </div>
                                     </a>
                                 </li>
+                                {% empty %}
                                 <li><span class="text-white-50">No hay noticias recientes.</span></li>
+                                {% endfor %}
                             </ul>
                         </div>
- 
+                    
                     </div> <!-- /.widget -->
                 </div> <!-- /.col-lg-4 -->
             </div> <!-- /.row -->
- 
+
             <div class="row mt-5">
                 <div class="col-12 text-center">
             </div>
